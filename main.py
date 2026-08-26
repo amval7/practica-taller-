@@ -33,3 +33,24 @@ def dividir(a: float, b: float):
 def es_par(numero: int):
     """Determina si un número entero es par o impar."""
     return {"numero": numero, "es_par": (numero % 2 == 0)}
+
+@app.get("/potencia")
+def potencia(base: float, exponente: float):
+    """Calcula la potencia de un número."""
+    if exponente < 0:
+        raise HTTPException(status_code=400, detail="Exponente negativo no soportado")
+    return {"base": base, "exponente": exponente, "resultado": base ** exponente}
+
+@app.get("/raiz-cuadrada/{numero}")
+def raiz_cuadrada(numero: float):
+    """Calcula la raíz cuadrada de un número positivo."""
+    if numero < 0:
+        raise HTTPException(status_code=400, detail="No se admiten números negativos")
+    return {"numero": numero, "resultado": numero ** 0.5}
+
+@app.get("/porcentaje")
+def porcentaje(total: float, porcentaje: float):
+    """Calcula el porcentaje de una cantidad dada."""
+    if total < 0 or porcentaje < 0:
+        raise HTTPException(status_code=400, detail="Los valores deben ser positivos")
+    return {"resultado": (total * porcentaje) / 100}

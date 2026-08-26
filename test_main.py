@@ -47,3 +47,33 @@ def test_es_par():
     response_impar = client.get("/es-par/7")
     assert response_impar.status_code == 200
     assert response_impar.json()["es_par"] is False
+
+def test_potencia():
+    response = client.get("/potencia?base=2&exponente=3")
+    assert response.status_code == 200
+    assert response.json()["resultado"] == 8.0
+
+def test_potencia_exponente_negativo():
+    response = client.get("/potencia?base=2&exponente=-1")
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Exponente negativo no soportado"
+
+def test_raiz_cuadrada_valida():
+    response = client.get("/raiz-cuadrada/16")
+    assert response.status_code == 200
+    assert response.json()["resultado"] == 4.0
+
+def test_raiz_cuadrada_negativa():
+    response = client.get("/raiz-cuadrada/-9")
+    assert response.status_code == 400
+    assert response.json()["detail"] == "No se admiten números negativos"
+
+def test_porcentaje():
+    response = client.get("/porcentaje?total=200&porcentaje=15")
+    assert response.status_code == 200
+    assert response.json()["resultado"] == 30.0
+
+def test_porcentaje_negativo():
+    response = client.get("/porcentaje?total=-50&porcentaje=10")
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Los valores deben ser positivos"
